@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/checkioname/pomodoro/internal"
 )
@@ -20,13 +21,12 @@ func main() {
 			name, flag.Value, flag.Default, flag.Description)
   }
   
+  rest := time.Duration(register.Flags["r"].Value.(int))
+  studyTime := time.Duration(register.Flags["t"].Value.(int))
+  pomo := internal.NewPomoTimer(studyTime, rest)
+  
+  pomo.StartStudy()
 
-  // pomo := internal.NewPomoTimer(register.Flags["t"].Value, register.Flags["r"].Value)
-  // for {
-  //   pomo.StartStudy()
-  //
-  // }
-  //
 
   // timeFlag := flag.Int("t", 1234)
 }
