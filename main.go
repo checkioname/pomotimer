@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/checkioname/pomodoro/internal"
@@ -9,12 +10,13 @@ import (
 
 func main() {
 
-  register := internal.NewFlagRegistry()
+  register := internal.NewFlagRegistry("PomoTimer")
 
-  register.RegisterFlag("t", 45, "Pomo time in minutes")
-  register.RegisterFlag("r", 5, "Rest time in minutes")
-
-  register.Parse()
+  args := os.Args[1:]
+  
+  fmt.Println("Parse iniciando")
+  register.Parse(args)
+  fmt.Println(args)
 
 	for name, flag := range register.Flags {
 		fmt.Printf("Flag: %s, Value: %v (Default: %v), Description: %s\n",
@@ -22,11 +24,21 @@ func main() {
   }
   
   rest := time.Duration(register.Flags["r"].Value.(int))
+
+  fmt.Printf("Value of flag r: %v\n", rest)
   studyTime := time.Duration(register.Flags["t"].Value.(int))
   pomo := internal.NewPomoTimer(studyTime, rest)
-  
-  pomo.StartStudy()
 
+  for {
+    done := pomo.StartStudy()
+    if done {
+      fmt.Println("Now it's rest time!")
+    }
+    done = pomo.StartRest()
+    if done {
+      break
+    }
+  }
 
-  // timeFlag := flag.Int("t", 1234)
 }
+  // timeFlag := flag.Int("t", 1234)

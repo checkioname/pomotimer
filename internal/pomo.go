@@ -26,10 +26,7 @@ func (p *PomoTimer) Reset() {
   p.RemainderTime = p.Interval
 }
 
-func (p *PomoTimer) StartStudy() {
-
-
-
+func (p *PomoTimer) StartStudy() bool {
   p.RemainderTime = p.Interval
   for p.RemainderTime > 0 {
       time.Sleep(time.Second)           // Espera 1 segundo
@@ -37,18 +34,19 @@ func (p *PomoTimer) StartStudy() {
       fmt.Printf("You still got %v of studying\n", p.RemainderTime)
   }
 
-  // for i:= 0; i >= int(p.RemainderTime); p.RemainderTime -= time.Second * 1 {
-  //   time.Sleep(time.Second)
-  //   fmt.Println("1 second has been passed")    
-  // }
-  fmt.Println("Good work! Keep pushing!!")
+  fmt.Println("Good work, time is done! Keep pushing!!")
+  return true
 }
 
 
-func (p *PomoTimer) StartRest () {
+func (p *PomoTimer) StartRest () bool {
   p.RemainderTime = p.Rest
-  for i:= 0; i <= int(p.RemainderTime); p.RemainderTime -= time.Second {
-    
+
+  for p.RemainderTime > 0 {
+      time.Sleep(time.Second)           // Espera 1 segundo
+      p.RemainderTime -= time.Second    // Decrementa 1 segundo do tempo restante
+      fmt.Printf("You still got %v of studying\n", p.RemainderTime)
   }
   fmt.Println("Now it's time to get back to work!! ;)")
+  return true
 }
